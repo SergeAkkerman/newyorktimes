@@ -44,6 +44,7 @@ class Articleslist extends React.Component<Props, State> {
 
 	articlePropsToAction(articleData: any) {
 		return () => {
+			articleData.isOpened = true;
 			this.props.ArticleDataToStore(articleData);
 		};
 	}
