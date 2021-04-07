@@ -15,7 +15,7 @@ const store = createStore(
 store.subscribe(
 	throttle(() => {
 		saveState({
-			ARTICLE_DATA_TOSTORE: store.getState().ARTICLE_DATA_TO_STORE,
+			ARTICLE_DATA_TO_STORE: store.getState().ARTICLE_DATA_TO_STORE,
 		});
 	}, 1000)
 );
