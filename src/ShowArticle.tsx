@@ -1,7 +1,16 @@
 import { connect } from "react-redux";
 
 const ShowArticle = (result: any) => {
-	return <div>{result["title"]}</div>;
+	return (
+		<div>
+			Title: {result["title"]}
+			<br />
+			Description: {result["abstract"]}
+			<br />
+			Id: {result["id"]}
+			<br />
+		</div>
+	);
 };
 
 const mapStateToProps = (state: any) => {

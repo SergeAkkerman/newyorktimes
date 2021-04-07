@@ -1,7 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { connect } from "react-redux";
+import { Link, Route, Switch } from "react-router-dom";
 import { ArticleDataToStore } from "../redux/Actions";
+import ShowArticle from "../ShowArticle";
 
 interface Props {
 	ArticleDataToStore: typeof ArticleDataToStore;
@@ -18,6 +20,7 @@ interface Apis {
 interface Article {
 	media: any;
 	title: string;
+	id: number;
 }
 
 class Articleslist extends React.Component<Props, State> {
@@ -29,6 +32,7 @@ class Articleslist extends React.Component<Props, State> {
 		this.getArticlesFromApi = this.getArticlesFromApi.bind(this);
 		this.listArticles = this.listArticles.bind(this);
 		this.articlePropsToAction = this.articlePropsToAction.bind(this);
+		this.listArticlesReturn = this.listArticlesReturn.bind(this);
 	}
 
 	getArticlesFromApi() {
@@ -65,7 +69,9 @@ class Articleslist extends React.Component<Props, State> {
 				>
 					<div className="textAlign">
 						<a onClick={this.articlePropsToAction(article)}>
-							{article.title}
+							<Link to={{ pathname: "/post/" + article.id }}>
+								{article.title}
+							</Link>
 						</a>
 					</div>
 				</div>
@@ -75,12 +81,23 @@ class Articleslist extends React.Component<Props, State> {
 		);
 	}
 
+	listArticlesReturn() {
+		return <div>{this.listArticles()}</div>;
+	}
+
 	componentDidMount() {
 		this.getArticlesFromApi();
 	}
 
 	render() {
-		return <div>{this.listArticles()}</div>;
+		return (
+			<div>
+				<Switch>
+					<Route exact path="/" component={this.listArticlesReturn} />
+					<Route path="/post/" component={ShowArticle} />
+				</Switch>
+			</div>
+		);
 	}
 }
 
