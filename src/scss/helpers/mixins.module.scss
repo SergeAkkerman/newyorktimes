@@ -1,0 +1,49 @@
+//media queries for different screens
+
+@mixin screenSize($size) {
+	@if $size == 2000 {
+		@media (max-width: 2000px) {
+			@content;
+		}
+	} @else if $size == 1920 {
+		@media (max-width: 1920px) {
+			@content;
+		}
+	} @else if $size == 1440 {
+		@media (max-width: 1440px) {
+			@content;
+		}
+	} @else if $size == 1366 {
+		@media (max-width: 1366px) {
+			@content;
+		}
+	} @else if $size == 1280 {
+		@media (max-width: 1280px) {
+			@content;
+		}
+	} @else if $size == 1024 {
+		@media (max-width: 1024px) {
+			@content;
+		}
+	} @else if $size == 850 {
+		@media (max-width: 850px) {
+			@content;
+		}
+	} @else if $size == 768 {
+		@media (max-width: 768px) {
+			@content;
+		}
+	} @else if $size == 600 {
+		@media (max-width: 600px) {
+			@content;
+		}
+	} @else if $size == 480 {
+		@media (maax-width: 480px) {
+			@content;
+		}
+	} @else if $size == 320 {
+		@media (max-width: 320px) {
+			@content;
+		}
+	}
+}

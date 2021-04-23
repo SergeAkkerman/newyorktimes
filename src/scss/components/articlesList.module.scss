@@ -1,0 +1,56 @@
+@use "../helpers/mixins.module.scss" as mix;
+
+.content {
+	margin: 0px;
+	padding: 0px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	background-repeat: no-repeat;
+}
+
+.block {
+	height: 15em;
+	width: 48%;
+	margin: 5px;
+	color: blue;
+	background-size: 110%;
+	background-repeat: no-repeat;
+	border-radius: 1em;
+	display: flex;
+}
+
+.textAlign {
+	//font-size: calc(100vw * 0.015);
+	background: rgba(0, 0, 0, 0.18);
+	padding: 0px;
+	width: 100%;
+	align-self: flex-end;
+	@include mix.screenSize(2000) {
+		font-size: 1.5vw;
+	}
+	@include mix.screenSize(1920) {
+		font-size: 1.56vw;
+	}
+	@include mix.screenSize(1440) {
+		font-size: 1.8vw;
+	}
+	@include mix.screenSize(1366) {
+		font-size: 1.9vw;
+	}
+	@include mix.screenSize(1280) {
+		font-size: 2vw;
+	}
+	@include mix.screenSize(1024) {
+		font-size: 2.5vw;
+	}
+	@include mix.screenSize(768) {
+		font-size: 2.9vw;
+	}
+	@include mix.screenSize(600) {
+		font-size: 3vw;
+	}
+	@include mix.screenSize(480) {
+		font-size: 3.1vw;
+	}
+}

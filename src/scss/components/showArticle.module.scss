@@ -1,0 +1,30 @@
+$blackText: rgb(26, 2, 2);
+
+.bgImage {
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 40vw;
+	width: 100%;
+	display: flex;
+}
+
+.text {
+	padding: 1vw;
+	color: $blackText;
+	align-self: flex-end;
+}
+
+.buttonsPosition {
+	display: flex;
+	justify-content: space-between;
+}
+
+.buttons {
+	background: #339dff;
+	border-color: #339dff;
+	display: inline-block;
+	border-radius: 50px;
+	a {
+		text-decoration: none;
+	}
+}

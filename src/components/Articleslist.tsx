@@ -3,7 +3,8 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { Link, Route, Switch } from "react-router-dom";
 import { ArticleDataToStore } from "../redux/Actions";
-import ShowArticle from "../ShowArticle";
+import ShowArticle from "./ShowArticle";
+import styles from "../scss/components/articlesList.module.scss";
 
 interface Props {
 	ArticleDataToStore: typeof ArticleDataToStore;
@@ -58,22 +59,21 @@ class Articleslist extends React.Component<Props, State> {
 		return articlesArray.map((article: Article) =>
 			article.media[0] ? (
 				<div
-					className="ArticleDiv"
+					className={styles.block}
 					style={{
 						backgroundImage:
 							"url(" +
 							article.media[0]["media-metadata"][2]["url"] +
 							")",
 					}}
-					key={article.title}
 				>
-					<div className="textAlign">
-						<a onClick={this.articlePropsToAction(article)}>
-							<Link to={{ pathname: "/post/" + article.id }}>
-								{article.title}
-							</Link>
-						</a>
-					</div>
+					<Link
+						to={{ pathname: "/post/" + article.id }}
+						onClick={this.articlePropsToAction(article)}
+						className={styles.textAlign}
+					>
+						{article.title}
+					</Link>
 				</div>
 			) : (
 				console.log("error")
@@ -82,7 +82,7 @@ class Articleslist extends React.Component<Props, State> {
 	}
 
 	listArticlesReturn() {
-		return <div>{this.listArticles()}</div>;
+		return <div className={styles.content}>{this.listArticles()}</div>;
 	}
 
 	componentDidMount() {
