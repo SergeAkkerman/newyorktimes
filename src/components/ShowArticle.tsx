@@ -1,13 +1,12 @@
 import { connect } from "react-redux";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "../scss/components/showArticle.module.scss";
 import variables from "../scss/helpers/variables.module.scss";
-import Articleslist from "./Articleslist";
 
 const ShowArticle = (result: any) => {
 	return (
 		<div
-			className={styles.bgImage}
+			className={styles.articleBlock}
 			style={{
 				backgroundImage:
 					variables.gradient +
@@ -28,15 +27,12 @@ const ShowArticle = (result: any) => {
 					</button>
 				</div>
 			</div>
-			<Switch>
-				<Route exact path="/" component={Articleslist} />
-			</Switch>
 		</div>
 	);
 };
 
 const mapStateToProps = (state: any) => {
-	var result = state["ARTICLE_DATA_TO_STORE"]["currentArticleData"][0];
+	var result = state.articleData.currentArticleData[0];
 	return result;
 };
 

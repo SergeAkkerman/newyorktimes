@@ -1,15 +1,15 @@
-import React from "react";
-import logo from "./logo.svg";
-import Articleslist from "./components/Articleslist";
-import ShowArticle from "./components/ShowArticle";
 import styles from "./scss/base/base.module.scss";
 import "./scss/base/fonts.scss";
+import Header from "./components/Header";
+import AllRoutes from "./components/Routes";
+import CheckUserAuth from "./components/CheckUserAuth";
 
 function App() {
 	return (
 		<div className={styles.app}>
-			<header></header>
-			<Articleslist />
+			{CheckUserAuth()}
+			<Header />
+			<AllRoutes />
 		</div>
 	);
 }

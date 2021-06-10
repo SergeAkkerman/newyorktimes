@@ -1,6 +1,11 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
 import throttle from "lodash.throttle";
-import rootReducer from "./reducers";
+import { getFirestore } from "redux-firestore";
+import { getFirebase } from "react-redux-firebase";
+
+import rootReducer from "./reducers/index";
 import { loadState, saveState } from "./LocalStorage";
 
 const persistedState = loadState();
@@ -8,23 +13,17 @@ const persistedState = loadState();
 const store = createStore(
 	rootReducer,
 	persistedState,
-	(window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
-		(window as any).__REDUX_DEVTOOLS_EXTENSION__()
+	composeWithDevTools(
+		applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore }))
+	)
 );
 
 store.subscribe(
 	throttle(() => {
 		saveState({
-			ARTICLE_DATA_TO_STORE: store.getState().ARTICLE_DATA_TO_STORE,
+			articleData: store.getState().articleData,
 		});
-	}, 1000)
+	}, 500)
 );
 
 export default store;
-
-// export default createStore(
-// 	rootReducer,
-// 	persistedState,
-// 	(window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
-// 		(window as any).__REDUX_DEVTOOLS_EXTENSION__()
-// );

@@ -13,15 +13,23 @@
 	height: 15em;
 	width: 48%;
 	margin: 5px;
-	color: blue;
-	background-size: 110%;
+	background-size: 100%;
 	background-repeat: no-repeat;
 	border-radius: 1em;
 	display: flex;
+	background-position: center;
+
+	@include mix.screenSize(850) {
+		width: 80%;
+	}
+	@include mix.screenSize(480) {
+		height: 10em;
+	}
 }
 
 .textAlign {
 	//font-size: calc(100vw * 0.015);
+	border-radius: 0.5em;
 	background: rgba(0, 0, 0, 0.18);
 	padding: 0px;
 	width: 100%;
@@ -33,7 +41,7 @@
 		font-size: 1.56vw;
 	}
 	@include mix.screenSize(1440) {
-		font-size: 1.8vw;
+		font-size: 1.7vw;
 	}
 	@include mix.screenSize(1366) {
 		font-size: 1.9vw;
@@ -44,13 +52,19 @@
 	@include mix.screenSize(1024) {
 		font-size: 2.5vw;
 	}
+	@include mix.screenSize(850) {
+		font-size: 4vw;
+	}
 	@include mix.screenSize(768) {
-		font-size: 2.9vw;
+		font-size: 4vw;
 	}
 	@include mix.screenSize(600) {
-		font-size: 3vw;
+		font-size: 4vw;
 	}
 	@include mix.screenSize(480) {
-		font-size: 3.1vw;
+		font-size: 4vw;
+	}
+	@include mix.screenSize(320) {
+		font-size: 4vw;
 	}
 }

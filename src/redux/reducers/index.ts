@@ -1,5 +1,12 @@
 import { combineReducers } from "redux";
+import { firebaseReducer } from "react-redux-firebase";
+import { firestoreReducer } from "redux-firestore";
+import articleData from "./ArticleDataReducer";
+import userAuth from "./UserAuthReducer";
 
-import ARTICLE_DATA_TO_STORE from "./ArticleDataReducer";
-
-export default combineReducers({ ARTICLE_DATA_TO_STORE });
+export default combineReducers({
+	articleData: articleData,
+	userauth: userAuth,
+	firebase: firebaseReducer,
+	firestore: firestoreReducer,
+});

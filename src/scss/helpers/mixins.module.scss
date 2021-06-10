@@ -38,7 +38,7 @@
 			@content;
 		}
 	} @else if $size == 480 {
-		@media (maax-width: 480px) {
+		@media (max-width: 480px) {
 			@content;
 		}
 	} @else if $size == 320 {

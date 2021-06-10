@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { connect } from "react-redux";
-import { Link, Route, Switch } from "react-router-dom";
+import { RouteComponentProps, withRouter, Link } from "react-router-dom";
 import { ArticleDataToStore } from "../redux/Actions";
 import ShowArticle from "./ShowArticle";
 import styles from "../scss/components/articlesList.module.scss";
@@ -11,94 +11,118 @@ interface Props {
 }
 
 interface State {
-	articles: object;
+	allArticles: object;
+	article: object;
+	path: string;
 }
 
-interface Apis {
+interface Api {
 	results: object;
 }
 
 interface Article {
 	media: any;
 	title: string;
-	id: number;
+	id: string;
 }
 
-class Articleslist extends React.Component<Props, State> {
-	constructor(props: Props) {
+class Articleslist extends React.Component<
+	RouteComponentProps<{}> & Props,
+	State
+> {
+	constructor(props: RouteComponentProps<{}> & Props) {
 		super(props);
 		this.state = {
-			articles: [],
+			allArticles: [],
+			article: [],
+			path: "",
 		};
-		this.getArticlesFromApi = this.getArticlesFromApi.bind(this);
-		this.listArticles = this.listArticles.bind(this);
-		this.articlePropsToAction = this.articlePropsToAction.bind(this);
-		this.listArticlesReturn = this.listArticlesReturn.bind(this);
 	}
-
 	getArticlesFromApi() {
 		axios
-			.get<Apis>(
+			.get<Api>(
 				"https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=mN6Xg33Uh049lVc0uwErmOgdhb4TYBt4"
 			)
 			.then((res) => {
 				const dataResults = res.data.results;
-				this.setState({ articles: dataResults });
+				this.setState({ allArticles: dataResults });
 			});
 	}
 
-	articlePropsToAction(articleData: any) {
-		return () => {
-			articleData.isOpened = true;
-			this.props.ArticleDataToStore(articleData);
-		};
+	articlePropsToAction() {
+		this.props.ArticleDataToStore(this.state.article);
+		console.log(this.state);
+	}
+
+	userRedirect() {
+		const { history } = this.props;
+		const url = this.state.path;
+		if (history) history.push("/post/" + url);
 	}
 
 	listArticles() {
-		const articlesArray = this.state.articles as Array<any>;
-		return articlesArray.map((article: Article) =>
-			article.media[0] ? (
-				<div
-					className={styles.block}
-					style={{
-						backgroundImage:
-							"url(" +
-							article.media[0]["media-metadata"][2]["url"] +
-							")",
-					}}
-				>
-					<Link
-						to={{ pathname: "/post/" + article.id }}
-						onClick={this.articlePropsToAction(article)}
-						className={styles.textAlign}
-					>
-						{article.title}
-					</Link>
-				</div>
-			) : (
-				console.log("error")
-			)
+		const articlesArray = this.state.allArticles as Array<any>;
+		return (
+			<div className={styles.content}>
+				{articlesArray.map(
+					(article: Article) =>
+						article.media[0] && (
+							<div
+								onClick={() => {
+									this.setState({
+										article: article,
+										path: article.id,
+									});
+								}}
+								className={styles.block}
+								style={{
+									backgroundImage:
+										"url(" +
+										article.media[0]["media-metadata"][1][
+											"url"
+										] +
+										")",
+								}}
+							>
+								<a
+									onClick={() => {
+										//save article data when user clicks on title
+										this.setState({
+											article: article,
+											path: article.id,
+										});
+									}}
+									className={styles.textAlign}
+								>
+									{article.title}
+								</a>
+							</div>
+						)
+				)}
+			</div>
 		);
-	}
-
-	listArticlesReturn() {
-		return <div className={styles.content}>{this.listArticles()}</div>;
 	}
 
 	componentDidMount() {
 		this.getArticlesFromApi();
 	}
 
+	componentDidUpdate(_prevProps: any, prevState: any) {
+		if (prevState.article != this.state.article) {
+			this.articlePropsToAction();
+			this.userRedirect();
+		}
+	}
+
 	render() {
-		return (
-			<div>
-				<Switch>
-					<Route exact path="/" component={this.listArticlesReturn} />
-					<Route path="/post/" component={ShowArticle} />
-				</Switch>
-			</div>
-		);
+		return <div>{this.listArticles()}</div>;
 	}
 }
 
-export default connect(null, { ArticleDataToStore })(Articleslist);
+const mapDispatchToProps = (dispatch: any) => {
+	return {
+		ArticleDataToStore: (articleData: any) =>
+			dispatch(ArticleDataToStore(articleData)),
+	};
+};
+export default connect(null, mapDispatchToProps)(withRouter(Articleslist));
