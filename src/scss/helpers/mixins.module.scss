@@ -37,8 +37,16 @@
 		@media (max-width: 600px) {
 			@content;
 		}
+	} @else if $size == 650 {
+		@media (max-width: 650px) {
+			@content;
+		}
 	} @else if $size == 480 {
 		@media (max-width: 480px) {
+			@content;
+		}
+	} @else if $size == 360 {
+		@media (max-width: 360px) {
 			@content;
 		}
 	} @else if $size == 320 {

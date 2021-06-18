@@ -1,3 +1,5 @@
+// All routes of the app
+
 import { Route, Switch } from "react-router-dom";
 
 import ShowArticle from "./ShowArticle";

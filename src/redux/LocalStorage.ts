@@ -1,3 +1,5 @@
+// local storage is intended to maintain Redux store on page refresh and on opening new tab
+
 export const loadState = () => {
 	try {
 		const serializedState = localStorage.getItem("state");

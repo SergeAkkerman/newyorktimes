@@ -1,3 +1,7 @@
+// Action creators
+
+import { AppDispatch } from "./Store";
+
 import {
 	articleDataInterface,
 	userLoginErrror,
@@ -13,53 +17,99 @@ import {
 	SIGNUP_ERROR,
 } from "./ActionTypes";
 
-export const ArticleDataToStore = (saveData: any) => ({
-	type: ARTICLE_DATA_TO_STORE,
-	payload: {
-		currentArticleArray: [saveData],
-	},
-});
+export interface Icredentials {
+	email: string;
+	password: string;
+}
+
+export interface InewUser {
+	avatar: string;
+	email: string;
+	fieldError: string;
+	name: string;
+	password: string;
+}
+
+export interface Iactions {
+	type: string;
+	err: Error;
+}
+
+interface Iresp {
+	user: {
+		uid: string;
+	};
+}
+
+// save selected article to Redux store
+export const ArticleDataToStore = (saveData: any) => {
+	return {
+		type: ARTICLE_DATA_TO_STORE,
+		payload: {
+			currentArticleArray: [saveData],
+		},
+	};
+};
 
 // login with email and password
-export const SignIn = (credentials: any) => {
-	return (dispatch: any, getState: any, { getFirebase }: any) => {
+export const SignIn = (credentials: Icredentials) => {
+	return (
+		dispatch: AppDispatch,
+		getState: Function,
+		{ getFirebase }: any
+	) => {
 		const firebase = getFirebase();
 		firebase
 			.auth()
-			.signInWithEmailAndPassword(credentials.email, credentials.password)
+			.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 			.then(() => {
-				dispatch({ type: "LOGIN_SUCCESS" });
-			})
-			.catch((err: any) => {
-				dispatch({ type: "LOGIN_ERROR", err });
+				firebase
+					.auth()
+					.signInWithEmailAndPassword(
+						credentials.email,
+						credentials.password
+					)
+					.then(() => {
+						dispatch({ type: "LOGIN_SUCCESS" });
+					})
+					.catch((err: Error) => {
+						dispatch({ type: "LOGIN_ERROR", err });
+					});
 			});
 	};
 };
 
 // login with Google
-
 export const loginWithGoogle = () => {
-	return (dispatch: any, getState: any, { getFirebase }: any) => {
+	return (
+		dispatch: AppDispatch,
+		getState: Function,
+		{ getFirebase }: any
+	) => {
 		const firebase = getFirebase();
 		firebase
 			.auth()
-			.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+			.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 			.then(() => {
 				var provider = new firebase.auth.GoogleAuthProvider();
-				firebase.auth().signInWithPopup(provider);
+				return firebase.auth().signInWithPopup(provider);
 			})
 			.then(() => {
 				dispatch({ type: "LOGIN_SUCCESS" });
 			})
-			.catch((err: any) => {
+			.catch((err: Error) => {
 				dispatch({ type: "LOGIN_ERROR", err });
 			});
 	};
 };
 
-//logout
+// logout
 export const logOut = () => {
-	return (dispatch: any, getState: any, { getFirebase }: any) => {
+	return (
+		dispatch: AppDispatch,
+		getState: Function,
+		{ getFirebase }: any
+	) => {
 		const firebase = getFirebase();
 		firebase
 			.auth()
@@ -70,11 +120,11 @@ export const logOut = () => {
 	};
 };
 
-//user signUp
-export const signUp = (newUser: any) => {
+// signUp
+export const signUp = (newUser: InewUser) => {
 	return (
-		dispatch: any,
-		getState: any,
+		dispatch: AppDispatch,
+		getState: Function,
 		{ getFirebase, getFirestore }: any
 	) => {
 		const firebase = getFirebase();
@@ -82,7 +132,8 @@ export const signUp = (newUser: any) => {
 		firebase
 			.auth()
 			.createUserWithEmailAndPassword(newUser.email, newUser.password)
-			.then((resp: any) => {
+			.then((resp: Iresp) => {
+				console.log(resp);
 				return firestore.collection("users").doc(resp.user.uid).set({
 					email: newUser.email,
 					name: newUser.name,
@@ -92,7 +143,7 @@ export const signUp = (newUser: any) => {
 			.then(() => {
 				dispatch({ type: "SIGNUP_SUCCESS" });
 			})
-			.catch((err: any) => {
+			.catch((err: Error) => {
 				dispatch({ type: "SIGNUP_ERROR", err });
 			});
 	};

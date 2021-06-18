@@ -1,10 +1,47 @@
+// Article page
+
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import styles from "../scss/components/showArticle.module.scss";
 import variables from "../scss/helpers/variables.module.scss";
 
-const ShowArticle = (result: any) => {
-	return (
+interface Iprops {
+	history: {
+		push: Function;
+	};
+	result: {
+		media: {
+			0: {
+				"media-metadata": {
+					2: {
+						url: { [index: string]: string };
+					};
+				};
+			};
+		};
+		title: string;
+		abstract: string;
+		url: string;
+	};
+	isLoggedIn: boolean;
+}
+
+interface Istate {
+	articleData: {
+		currentArticleData: any;
+	};
+	userauth: {
+		signedIn: boolean;
+	};
+}
+
+// receive image, title, description from Redux as props and render component
+const ShowArticle = (props: Iprops) => {
+	// restrict unauthorised users to see detailed description
+	const { result, isLoggedIn } = props;
+	return isLoggedIn === false ? (
+		<Redirect to="/" />
+	) : (
 		<div
 			className={styles.articleBlock}
 			style={{
@@ -31,9 +68,11 @@ const ShowArticle = (result: any) => {
 	);
 };
 
-const mapStateToProps = (state: any) => {
-	var result = state.articleData.currentArticleData[0];
-	return result;
+const mapStateToProps = (state: Istate) => {
+	return {
+		result: state.articleData.currentArticleData[0],
+		isLoggedIn: state.userauth.signedIn,
+	};
 };
 
 export default connect(mapStateToProps)(ShowArticle);

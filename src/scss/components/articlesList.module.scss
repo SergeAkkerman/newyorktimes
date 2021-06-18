@@ -10,6 +10,7 @@
 }
 
 .block {
+	text-align: center;
 	height: 15em;
 	width: 48%;
 	margin: 5px;
@@ -28,17 +29,18 @@
 }
 
 .textAlign {
-	//font-size: calc(100vw * 0.015);
+	color: #fff;
+	font-size: calc(100vw * 0.015);
 	border-radius: 0.5em;
 	background: rgba(0, 0, 0, 0.18);
 	padding: 0px;
 	width: 100%;
 	align-self: flex-end;
 	@include mix.screenSize(2000) {
-		font-size: 1.5vw;
+		font-size: 1.9vw;
 	}
 	@include mix.screenSize(1920) {
-		font-size: 1.56vw;
+		font-size: 1.65vw;
 	}
 	@include mix.screenSize(1440) {
 		font-size: 1.7vw;

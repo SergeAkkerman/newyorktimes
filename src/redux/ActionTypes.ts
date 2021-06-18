@@ -4,6 +4,8 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const SIGNOUT_SUCCESS = "SIGNOUT_SUCCESS";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_ERROR = "SIGNUP_ERROR";
+export const OPENED = "OPENED";
+export const CLOSED = "CLOSED";
 
 export interface articleDataInterface {
 	type: typeof ARTICLE_DATA_TO_STORE;

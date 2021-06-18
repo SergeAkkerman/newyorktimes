@@ -1,3 +1,5 @@
+// subscribe to store with devtools and middleware
+
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
@@ -25,5 +27,5 @@ store.subscribe(
 		});
 	}, 500)
 );
-
+export type AppDispatch = typeof store.dispatch;
 export default store;

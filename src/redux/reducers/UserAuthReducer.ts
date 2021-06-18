@@ -1,32 +1,43 @@
+// Save info about user authorisation in Redux
+
 import { LOGIN_ERROR } from "../ActionTypes";
 import { LOGIN_SUCCESS } from "../ActionTypes";
 import { SIGNOUT_SUCCESS } from "../ActionTypes";
 import { SIGNUP_SUCCESS } from "../ActionTypes";
 import { SIGNUP_ERROR } from "../ActionTypes";
+import { Iactions } from "../Actions";
 
-const initialState = {
-	authError: null,
+interface loginState {
+	authError: string | null;
+	signedIn: boolean | null;
+	signupError: string | null;
+}
+
+const initialState: loginState = {
+	authError: "",
+	signedIn: null,
+	signupError: "",
 };
 
-const loginReducer = (state = initialState, action: any) => {
+const loginReducer = (state = initialState, action: Iactions): loginState => {
 	switch (action.type) {
 		case "LOGIN_ERROR":
-			return { ...state, authError: action.err.message };
+			return { ...state, authError: action.err.message, signedIn: false };
 		case "LOGIN_SUCCESS":
-			return { ...state, authError: null };
+			return { ...state, authError: "", signedIn: true };
 		case "SIGNOUT_SUCCESS":
-			console.log("Signout success");
-			return state;
+			return { ...state, signedIn: false };
 		case "SIGNUP_SUCCESS":
-			console.log("signup success");
 			return {
 				...state,
-				authError: null,
+				authError: "",
+				signedIn: true,
 			};
 		case "SIGNUP_ERROR":
-			console.log("signup error");
 			return {
 				authError: action.err.message,
+				signupError: action.err.message,
+				signedIn: false,
 			};
 		default:
 			return state;

@@ -1,16 +1,15 @@
+//check if user is logged in once the application starts
+
 import fire from "../config/firebase";
+import { useDispatch } from "react-redux";
 
-interface Header {}
-
-export default function UserAuthStateChanged() {
+const UserAuth = () => {
+	const dispatch = useDispatch();
 	fire.auth().onAuthStateChanged((user) => {
-		let loggedIn = {};
-		if (user) {
-			// User is signed in.
-			loggedIn = true;
-		} else {
-			loggedIn = false;
-		}
-		console.log("Logged in: ", loggedIn);
+		user
+			? dispatch({ type: "LOGIN_SUCCESS" })
+			: dispatch({ type: "SIGNOUT_SUCCESS" });
 	});
-}
+};
+
+export default UserAuth;
